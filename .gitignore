@@ -1,0 +1,8 @@
+# Project specific
+CuraPortable/
+ConstructCura/
+download/
+patches/
+
+# PyCharm
+.idea/
