@@ -161,10 +161,12 @@ def applyPatch(patchName):
         # Copy the file.
         if os.path.isdir(replaceFile):
             if not os.path.isdir(existingFile):
-                os.mkdir(replaceFile)
-            for subFile in os.listdir(existingFile):
+                os.mkdir(existingFile)
+            for subFile in os.listdir(replaceFile):
                 copyFiles(os.path.join(file,subFile))
         else:
+            if os.path.exists(existingFile):
+                os.remove(existingFile)
             shutil.copy(replaceFile,existingFile)
 
     # Copy the files.
