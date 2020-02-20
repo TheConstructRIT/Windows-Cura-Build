@@ -140,10 +140,8 @@ if __name__ == '__main__':
 
     # Add the shapely module.
     print("Installing Shapely module.")
-    shapelyDownloadLocation = os.path.join(downloadsDirectory,"Shapely-1.6.4.post2-cp35-cp35m-win32.whl")
-    if not os.path.exists(shapelyDownloadLocation):
-        urllib.request.urlretrieve("https://download.lfd.uci.edu/pythonlibs/q4hpdf1k/cp35/Shapely-1.6.4.post2-cp35-cp35m-win32.whl",shapelyDownloadLocation)
-    runProcess([os.path.join(CURA_BUILD_LOCATION,"python","python.exe"),"-m","pip","install",shapelyDownloadLocation])
+    shapelyLocation = "precompiled/Shapely/Shapely-1.6.4.post2-cp35-cp35m-win32.whl"
+    runProcess([os.path.join(CURA_BUILD_LOCATION,"python","python.exe"),"-m","pip","install",shapelyLocation])
 
     # Copy the Uranium plugin files.
     print("Copying Uranium plugin files.")
