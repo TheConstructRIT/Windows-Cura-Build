@@ -192,7 +192,7 @@ if __name__ == '__main__':
     # Determine the patches.
     patches = []
     for patchName in os.listdir("patches"):
-        if os.path.isdir(os.path.join("patches",patchName)):
+        if patchName[0] != "." and os.path.isdir(os.path.join("patches",patchName)):
             patches.append(patchName)
 
     # Check if the patches can be applied.
