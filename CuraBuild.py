@@ -4,7 +4,7 @@ Zachary Cook
 Builds the latest version of Cura.
 """
 
-CURA_INSTALLER_DOWNLOAD_URL = "https://software.ultimaker.com/cura/Ultimaker_Cura-4.4.1-win64.exe"
+CURA_INSTALLER_DOWNLOAD_URL = "https://software.ultimaker.com/cura/Ultimaker_Cura-4.6.1-win64.exe"
 CURA_BUILD_LOCATION = "CuraPortable"
 
 _7ZIP_LOCATIONS = [
