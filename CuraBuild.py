@@ -4,12 +4,19 @@ Zachary Cook
 Builds the latest version of Cura.
 """
 
+REDISTRIBUTABLES_DOWNLOAD_URL = "https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x86.exe"
 CURA_INSTALLER_DOWNLOAD_URL = "https://software.ultimaker.com/cura/Ultimaker_Cura-4.6.1-win64.exe"
 CURA_BUILD_LOCATION = "CuraPortable"
 
 _7ZIP_LOCATIONS = [
     "C:/Program Files/7-Zip/7z.exe",
     "C:/Program Files (x86)/7-Zip/7z.exe",
+]
+
+DLL_FILE_NAMES = [
+    "libgcc_s_seh-1.dll",
+    "libgomp-1.dll",
+    "libstdc++-6.dll",
 ]
 
 
@@ -125,6 +132,15 @@ if __name__ == '__main__':
     if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,"resources","materials")):
         shutil.copytree(os.path.join(downloadsDirectory,"FDMMaterials","fdm_materials-" + version),os.path.join(CURA_BUILD_LOCATION,"resources","materials"))
 
+    # Fetch the redistributables installer.
+    print("Downloading the redistributables installer.")
+    redistributableDownloadLocation = os.path.join(downloadsDirectory,"vc_redist.x86.exe")
+    redistributableInstallLocation = os.path.join(CURA_BUILD_LOCATION,"vc_redist.x86.exe")
+    if not os.path.exists(redistributableDownloadLocation):
+        urllib.request.urlretrieve(REDISTRIBUTABLES_DOWNLOAD_URL,redistributableDownloadLocation)
+    if not os.path.exists(redistributableInstallLocation):
+        shutil.copy(redistributableDownloadLocation,redistributableInstallLocation)
+
     # Copy the Python install.
     print("Copying Python install.")
     if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,"python")):
@@ -182,12 +198,9 @@ if __name__ == '__main__':
 
     # Copy the DLLs.
     print("Copying DLLs.")
-    if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,"libgcc_s_seh-1.dll")):
-        shutil.copy(os.path.join(downloadsDirectory,"CuraInstaller","libgcc_s_seh-1.dll"),os.path.join(CURA_BUILD_LOCATION,"libgcc_s_seh-1.dll"))
-    if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,"libgomp-1.dll")):
-        shutil.copy(os.path.join(downloadsDirectory,"CuraInstaller","libgomp-1.dll"),os.path.join(CURA_BUILD_LOCATION,"libgomp-1.dll"))
-    if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,"libstdc++-6.dll")):
-        shutil.copy(os.path.join(downloadsDirectory,"CuraInstaller","libstdc++-6.dll"),os.path.join(CURA_BUILD_LOCATION,"libstdc++-6.dll"))
+    for dllFileName in DLL_FILE_NAMES:
+        if not os.path.exists(os.path.join(CURA_BUILD_LOCATION,dllFileName)):
+            shutil.copy(os.path.join(downloadsDirectory,"CuraInstaller",dllFileName),os.path.join(CURA_BUILD_LOCATION,dllFileName))
 
     # Create a script to open it.
     print("Creating batch script to launch Cura.")
