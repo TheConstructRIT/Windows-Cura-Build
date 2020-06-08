@@ -72,7 +72,7 @@ def canApplyPatch(patchName):
             print("\t" + file)
 
     # Return false if the files don't match.
-    if len(invalidFiles) != 0 and len(missingfiles) != 0:
+    if len(invalidFiles) != 0 or len(missingfiles) != 0:
         print("Unable to apply patch: " + patchName)
         for file in invalidFiles:
             print("\tExpected and actual files don't match: " + file)
@@ -214,5 +214,5 @@ if __name__ == '__main__':
     # Apply the patches.
     for patchName in patches:
         print("Apply patch: " + patchName)
-        applyPatch(patchName)
+        # applyPatch(patchName)
     print("Patches applied.")
