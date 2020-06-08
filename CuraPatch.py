@@ -214,5 +214,5 @@ if __name__ == '__main__':
     # Apply the patches.
     for patchName in patches:
         print("Apply patch: " + patchName)
-        # applyPatch(patchName)
+        applyPatch(patchName)
     print("Patches applied.")
