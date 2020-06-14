@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     # Add the PIP libraries.
     print("Installing the PIP Python libraries.")
-    runProcess([os.path.join(CURA_BUILD_LOCATION,"python","python.exe"),"-m","pip","install","numpy","scipy","cryptography","colorlog","netifaces","zeroconf","pyserial","PyQt5==5.10","requests"])
+    runProcess([os.path.join(CURA_BUILD_LOCATION,"python","python.exe"),"-m","pip","install","numpy","scipy","cryptography","colorlog","netifaces","zeroconf","pyserial","PyQt5==5.10","PyQt5-stubs==5.14.2.2","trimesh","sentry-sdk","requests"])
 
     # Add the shapely module.
     print("Installing Shapely module.")
