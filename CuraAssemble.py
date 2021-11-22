@@ -109,37 +109,6 @@ def performNMakeBuild(workingDirectory, commands):
     runCmd(workingDirectory, commands, "C:\Program Files (x86)\Microsoft Visual Studio\\2019\Community\VC\Auxiliary\Build\\vcvars64.bat")
 
 """
-Moves directory files up.
-"""
-def moveUp(extractedPath):
-    # Move the directory up.
-    while len(os.listdir(extractedPath)) == 1:
-        subDirectory = os.path.join(extractedPath, os.listdir(extractedPath)[0])
-        shutil.move(subDirectory, extractedPath + "-tmp")
-        shutil.rmtree(extractedPath)
-        shutil.move(extractedPath + "-tmp", extractedPath)
-
-"""
-Downloads a ZIP and extracts it.
-"""
-def downloadZip(downloadUrl, archiveLocation, extractedLocation):
-    # Download the file.
-    if not os.path.exists(archiveLocation) and not os.path.exists(extractedLocation):
-        response = requests.get(downloadUrl)
-        with open(archiveLocation, "wb") as file:
-            file.write(response.content)
-
-    # Extract the ZIP.
-    if not os.path.exists(extractedLocation):
-        with zipfile.ZipFile(archiveLocation) as zipFile:
-            zipFile.extractall(extractedLocation)
-    moveUp(extractedLocation)
-
-    # Delete the download.
-    if os.path.exists(archiveLocation):
-        os.remove(archiveLocation)
-
-"""
 Downloads and extracts an archive.
 """
 def downloadArchive(extractedPath, url):
@@ -163,7 +132,13 @@ def downloadArchive(extractedPath, url):
         file = tarfile.open(downloadPath)
         file.extractall(extractedPath)
         file.close()
-    moveUp(extractedPath)
+
+    # Move the directory up.
+    while len(os.listdir(extractedPath)) == 1:
+        subDirectory = os.path.join(extractedPath, os.listdir(extractedPath)[0])
+        shutil.move(subDirectory, extractedPath + "-tmp")
+        shutil.rmtree(extractedPath)
+        shutil.move(extractedPath + "-tmp", extractedPath)
 
     # Delete the download.
     if os.path.exists(downloadPath):
@@ -216,9 +191,6 @@ def buildDependencies(version):
         # Copy CuraEngine.
         shutil.copy(os.path.join(curaEngineDirectory, "install_dir", "bin", "CuraEngine.exe"), os.path.join(curaInstallDirectory, "CuraEngine.exe"))
 
-    # Remove the build environment.
-    shutil.rmtree(curaBuildDirectory)
-
 """
 Adds Cura files to the environment.
 """
@@ -231,17 +203,17 @@ def addCuraFiles(version):
 
     # Download Cura.
     print("Downloading and extracting Cura.")
-    downloadZip("https://github.com/Ultimaker/Cura/archive/" + version + ".zip", os.path.join(downloadsDirectory, "Cura.zip"), os.path.join(downloadsDirectory, "Cura-Download"))
+    downloadArchive(os.path.join(downloadsDirectory, "Cura-Download"), "https://api.github.com/repos/Ultimaker/Cura/tarball/" + version)
     if not os.path.exists(os.path.join(curaInstallDirectory, "cura_app.py")):
         copy_tree(os.path.join(downloadsDirectory, "Cura-Download"), curaInstallDirectory)
 
     # Download Uranium.
     print("Downloading and extracting Uranium.")
-    downloadZip("https://github.com/Ultimaker/Uranium/archive/" + version + ".zip", os.path.join(downloadsDirectory, "Uranium.zip"), os.path.join(downloadsDirectory, "Uranium"))
+    downloadArchive(os.path.join(downloadsDirectory, "Uranium"), "https://api.github.com/repos/Ultimaker/Uranium/tarball/" + version)
 
     # Download the FDM material definitions.
     print("Downloading and extracting FDM material definitions.")
-    downloadZip("https://github.com/Ultimaker/fdm_materials/archive/" + version + ".zip", os.path.join(downloadsDirectory, "FDMMaterials.zip"), os.path.join(downloadsDirectory, "FDMMaterials"))
+    downloadArchive(os.path.join(downloadsDirectory, "FDMMaterials") , "https://api.github.com/repos/Ultimaker/fdm_materials/tarball/" + version)
     if not os.path.exists(os.path.join(curaInstallDirectory, "resources", "materials")):
         shutil.copytree(os.path.join(downloadsDirectory, "FDMMaterials"), os.path.join(curaInstallDirectory, "resources", "materials"))
 
