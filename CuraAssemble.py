@@ -147,6 +147,10 @@ def downloadArchive(extractedPath, url):
     if os.path.exists(extractedPath):
         shutil.rmtree(extractedPath)
 
+    # Create the directory.
+    if not os.path.exists(os.path.dirname(extractedPath)):
+        os.makedirs(os.path.dirname(extractedPath))
+
     # Download the file.
     downloadPath = extractedPath + ".tar.gz"
     if not os.path.exists(downloadPath) and not os.path.exists(extractedPath):
