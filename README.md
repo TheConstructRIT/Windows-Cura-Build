@@ -9,9 +9,9 @@ Python libraries are required.
 Note: macOS and Linux are not supported.
 
 ## Running
-To create a build of Cura from GitHub, run the `CuraBuild` task.
+To create a build of Cura from GitHub, run the `CuraAssemble` task.
 ```
-python CuraBuild.py
+python CuraAssemble.py
 ```
 
 A version will be prompted. If no version is set, the latest version
