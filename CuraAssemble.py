@@ -234,16 +234,7 @@ def addCuraFiles(version):
     # Create a script to open it.
     print("Creating batch script to launch Cura.")
     if not os.path.exists(os.path.join(curaInstallDirectory, "launch.py")):
-        with open(os.path.join(curaInstallDirectory, "launch.py"), "w") as file:
-            file.write("\"\"\"\n")
-            file.write("This script is generated to launch Cura without a console window.\n")
-            file.write("pythonw.exe is not included in the build.\n")
-            file.write("\"\"\"\n\n")
-            file.write("# Hide the console window.\n")
-            file.write("import ctypes\n")
-            file.write("ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)\n\n")
-            file.write("# Start Cura.\n")
-            file.write("import cura_app")
+        shutil.copy("resources/launch.py", os.path.join(curaInstallDirectory, "launch.py"))
     if not os.path.exists(os.path.join(curaInstallDirectory, "launch.bat")):
         with open(os.path.join(curaInstallDirectory, "launch.bat"), "w") as file:
             file.write("bin\\python.exe launch.py")
